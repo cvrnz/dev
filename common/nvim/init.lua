@@ -14,6 +14,11 @@ vim.pack.add({
   { src = "https://github.com/sainnhe/everforest" },
 })
 
+-- Shortcuts use Cmd on a Mac (Ghostty) and Ctrl everywhere else, Windows Terminal included.
+-- WT_SESSION alone can't tell them apart, as SSH drops it.
+vim.g.cmd_shortcuts = not vim.env.WT_SESSION
+  and (vim.fn.has("mac") == 1 or vim.env.TERM_PROGRAM == "ghostty" or vim.env.TERM == "xterm-ghostty")
+
 require("tools").ensure_ripgrep()
 require("welcome").setup()
 
@@ -100,12 +105,32 @@ local function open_file(path, line, col)
   end
 end
 
+-- The welcome screen, in the tab's window if it's empty, otherwise in a new tab.
+vim.api.nvim_create_user_command("Welcome", function()
+  local win = content_win(0)
+  local buf = vim.api.nvim_win_get_buf(win)
+  if vim.bo[buf].filetype ~= "neo-tree" and is_empty(buf) then
+    vim.api.nvim_set_current_win(win)
+  else
+    vim.cmd("tabnew")
+    win, buf = vim.api.nvim_get_current_win(), vim.api.nvim_get_current_buf()
+  end
+  require("welcome").open(win)
+  -- The empty buffer it replaced would otherwise linger as a hidden [No Name].
+  if vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].filetype ~= "welcome" and #vim.fn.win_findbuf(buf) == 0 then
+    vim.api.nvim_buf_delete(buf, { force = true })
+  end
+end, { desc = "Open the welcome screen" })
+
 require("neo-tree").setup({
   commands = {
     -- Files open through open_file(); folders expand.
     open_in_tab = function(state)
       local node = state.tree:get_node()
       if node.type == "file" then
+        if state.current_position == "float" then
+          require("explorer").close()
+        end
         open_file(node:get_id())
       else
         require("neo-tree.sources.filesystem.commands").open(state)
@@ -123,9 +148,29 @@ require("neo-tree").setup({
   },
   window = {
     position = "left",
+    -- The floating explorer (Cmd+E, see explorer.lua) lays itself out; its preview is
+    -- explorer.lua's own, so neo-tree's preview keys scroll that instead.
+    popup = {
+      size = function() return require("explorer").popup_size() end,
+      position = function() return require("explorer").popup_position() end,
+      border = "rounded",
+    },
     mappings = {
       ["<cr>"] = "open_in_tab",
       ["<2-LeftMouse>"] = "open_in_tab",
+      ["P"] = "none",
+      ["<C-f>"] = function() require("explorer").scroll(1) end,
+      ["<C-b>"] = function() require("explorer").scroll(-1) end,
+    },
+  },
+  event_handlers = {
+    {
+      event = "neo_tree_window_after_open",
+      handler = function(args)
+        if args.position == "float" then
+          require("explorer").attach(args.winid)
+        end
+      end,
     },
   },
 })
@@ -140,14 +185,18 @@ elseif not vim.env.SHELL or vim.env.SHELL == "" then
 end
 vim.env.SHELL = vim.o.shell
 
--- Shortcuts use Cmd (Ghostty on macOS) or Ctrl (Windows Terminal, which sets WT_SESSION).
+-- Cmd is always mapped, since only a Mac terminal ever sends it; Ctrl is mapped off the Mac.
 -- Cmd shortcuts also work from inside terminals; Ctrl ones don't, so shells keep their Ctrl keys.
-local mod = vim.env.WT_SESSION and "C" or "D"
-local modes = mod == "D" and { "n", "t" } or { "n" }
+local mods = { D = { "n", "t" } }
+if not vim.g.cmd_shortcuts then
+  mods.C = { "n" }
+end
 
-local function map(keys, action, desc)
-  for _, key in ipairs(keys) do
-    vim.keymap.set(modes, "<" .. key:gsub("%%", mod) .. ">", action, { desc = desc })
+local function map(keys, action, desc, modes)
+  for mod, mod_modes in pairs(mods) do
+    for _, key in ipairs(keys) do
+      vim.keymap.set(modes or mod_modes, "<" .. key:gsub("%%", mod) .. ">", action, { desc = desc, nowait = true })
+    end
   end
 end
 
@@ -283,11 +332,11 @@ for _, release in ipairs({ "<LeftRelease>", "<2-LeftRelease>", "<3-LeftRelease>"
 end
 
 map({ "%-w" }, close_window, "Close window")
-vim.keymap.set({ "n", "i", "x" }, "<" .. mod .. "-s>", save, { desc = "Save" })
+map({ "%-s" }, save, "Save", { "n", "i", "x" })
 map({ "%-n" }, "<cmd>tabnew<cr>", "New tab")
 map({ "%-p" }, function() search("files") end, "Search")
 map({ "%-g" }, require("source_control").open, "Source control")
-map({ "%-e" }, "<cmd>Neotree toggle left reveal<cr>", "Toggle file explorer")
+map({ "%-e" }, require("explorer").toggle, "Toggle file explorer")
 
 -- Leaving a tab closes its explorer. It's closed once the new tab is entered, since the
 -- layout can't change mid-switch. A tab left with nothing but the explorer keeps it.
@@ -540,6 +589,25 @@ local function tab_label(tab)
   return name ~= "" and name or "Untitled"
 end
 
+-- Buttons on the right of the tab bar, clicked with the mouse.
+local tab_buttons = {
+  { " + ", "<cmd>tabnew<cr>" },
+  { " >_ ", terminal("tab split") },
+  { " ± ", require("source_control").open },
+}
+
+function _G.tab_button_click(index, clicks, button)
+  if button ~= "l" or clicks ~= 1 then
+    return
+  end
+  local action = tab_buttons[index][2]
+  if type(action) == "string" then
+    vim.api.nvim_feedkeys(vim.keycode(action), "n", false)
+  else
+    action()
+  end
+end
+
 function _G.tabline()
   local current = vim.api.nvim_get_current_tabpage()
   local parts = {}
@@ -547,7 +615,11 @@ function _G.tabline()
     local hl = tab == current and "%#TabLineSel#" or "%#TabLine#"
     table.insert(parts, hl .. "%" .. i .. "T " .. tab_label(tab) .. " ")
   end
-  return table.concat(parts) .. "%#TabLineFill#%T"
+  table.insert(parts, "%#TabLineFill#%T%=")
+  for i, item in ipairs(tab_buttons) do
+    table.insert(parts, "%#TabLine#%" .. i .. "@v:lua.tab_button_click@" .. item[1] .. "%X%#TabLineFill# ")
+  end
+  return table.concat(parts)
 end
 
 vim.o.tabline = "%!v:lua.tabline()"

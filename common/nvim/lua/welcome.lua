@@ -136,7 +136,7 @@ table.insert(animations, function(tick)
 end)
 
 
-local key = vim.env.WT_SESSION and "Ctrl " or "⌘ "
+local key = vim.g.cmd_shortcuts and "⌘ " or "Ctrl "
 
 local function shortcuts()
   return {
