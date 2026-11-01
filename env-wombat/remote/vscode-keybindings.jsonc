@@ -1,0 +1,361 @@
+[
+  /*----- editor -----*/
+
+  {
+    // focus editor
+    "key": "ctrl+d",
+    "command": "runCommands",
+    "args": {
+      "commands": ["workbench.action.closePanel", "workbench.action.focusActiveEditorGroup"],
+    },
+    "when": "!panelVisible",
+  },
+  {
+    // previous tab
+    "key": "ctrl+h",
+    "command": "workbench.action.previousEditor",
+    "when": "!sideBarFocus && !panelFocus && !auxiliaryBarFocus",
+  },
+  {
+    // next tab
+    "key": "ctrl+l",
+    "command": "workbench.action.nextEditor",
+    "when": "!sideBarFocus && !panelFocus && !auxiliaryBarFocus",
+  },
+  {
+    // close active editor
+    "key": "ctrl+w",
+    "command": "workbench.action.closeActiveEditor",
+    "when": "editorFocus",
+  },
+  {
+    // create new file
+    "key": "ctrl+n",
+    "command": "runCommands",
+    "args": {
+      "commands": ["workbench.action.closePanel", "workbench.action.files.newUntitledFile"],
+    },
+  },
+  {
+    // create new terminal in editor
+    "key": "ctrl+t",
+    "command": "runCommands",
+    "args": {
+      "commands": ["workbench.action.closePanel", "workbench.action.createTerminalEditor"],
+    },
+  },
+
+  /*----- panel-----*/
+
+  {
+    // focus panel
+    "key": "ctrl+g",
+    "command": "workbench.action.togglePanel",
+    "when": "!panelVisible || (panelVisible && panelMaximized)",
+  },
+  {
+    // ensure panel is maximized
+    "key": "ctrl+g",
+    "command": "workbench.action.toggleMaximizedPanel",
+    "when": "panelVisible && !panelMaximized",
+  },
+  {
+    // open claude code when panel is open
+    "key": "ctrl+d",
+    "command": "claudeVSCodeSidebarSecondary.focus",
+    "when": "panelVisible",
+  },
+  {
+    // next panel view
+    "key": "ctrl+l",
+    "command": "workbench.action.nextPanelView",
+    "when": "panelFocus",
+  },
+  {
+    // previous panel view
+    "key": "ctrl+h",
+    "command": "workbench.action.previousPanelView",
+    "when": "panelFocus",
+  },
+
+  /*----- sidebar -----*/
+
+  {
+    // focus source control
+    "key": "ctrl+r",
+    "command": "workbench.scm.focus",
+  },
+  {
+    // open explorer when sidebar is open
+    "key": "ctrl+e",
+    "command": "workbench.view.explorer",
+  },
+  {
+    // previous side bar view
+    "key": "ctrl+h",
+    "command": "workbench.action.previousSideBarView",
+    "when": "sideBarFocus",
+  },
+  {
+    // next side bar view
+    "key": "ctrl+l",
+    "command": "workbench.action.nextSideBarView",
+    "when": "sideBarFocus",
+  },
+
+  /*----- explorer -----*/
+
+  {
+    // open file
+    "key": "enter",
+    "command": "list.select",
+    "when": "explorerViewletFocus && !inputFocus",
+  },
+  {
+    // new file
+    "key": "a",
+    "command": "explorer.newFile",
+    "when": "explorerViewletFocus && !inputFocus",
+  },
+  {
+    // new folder
+    "key": "shift+a",
+    "command": "explorer.newFolder",
+    "when": "explorerViewletFocus && !inputFocus",
+  },
+  {
+    // rename
+    "key": "r",
+    "command": "renameFile",
+    "when": "explorerViewletFocus && !inputFocus",
+  },
+  {
+    // down
+    "key": "j",
+    "command": "list.focusDown",
+    "when": "explorerViewletFocus && !inputFocus",
+  },
+  {
+    // up
+    "key": "k",
+    "command": "list.focusUp",
+    "when": "explorerViewletFocus && !inputFocus",
+  },
+
+  /*----- other -----*/
+
+  {
+    // signal interrupt
+    "key": "shift+ctrl+c",
+    "command": "workbench.action.terminal.sendSequence",
+    "args": { "text": "\u0003" },
+    "when": "terminalFocus",
+  },
+
+  /*----- windows only -----*/
+
+  {
+    // clear scrollback
+    "key": "ctrl+k ctrl+k",
+    "command": "workbench.action.terminal.clear",
+    "when": "terminalFocus",
+  },
+
+  /*----- remove -----*/
+
+  {
+    "key": "ctrl+c",
+    "command": "-extension.vim_ctrl+c",
+    "when": "editorTextFocus && vim.active && vim.overrideCtrlC && vim.use<C-c> && !inDebugRepl",
+  },
+  {
+    "key": "ctrl+x",
+    "command": "-extension.vim_ctrl+x",
+    "when": "editorTextFocus && vim.active && vim.use<C-x> && !inDebugRepl",
+  },
+  {
+    "key": "ctrl+a",
+    "command": "-extension.vim_ctrl+a",
+    "when": "editorTextFocus && vim.active && vim.use<C-a> && !inDebugRepl",
+  },
+  {
+    "key": "ctrl+v",
+    "command": "-extension.vim_ctrl+v",
+    "when": "editorTextFocus && vim.active && vim.use<C-v> && !inDebugRepl",
+  },
+  {
+    "key": "ctrl+f",
+    "command": "-extension.vim_ctrl+f",
+    "when": "editorTextFocus && vim.active && vim.use<C-f> && !inDebugRepl && vim.mode != 'Insert'",
+  },
+  {
+    "key": "ctrl+w",
+    "command": "-extension.vim_ctrl+w",
+    "when": "editorTextFocus && vim.active && vim.use<C-w> && !inDebugRepl",
+  },
+  {
+    "key": "ctrl+p",
+    "command": "-extension.vim_ctrl+p",
+    "when": "editorTextFocus && vim.active && vim.use<C-p> && !inDebugRepl || vim.active && vim.use<C-p> && !inDebugRepl && vim.mode == 'CommandlineInProgress' || vim.active && vim.use<C-p> && !inDebugRepl && vim.mode == 'SearchInProgressMode'",
+  },
+  {
+    "key": "ctrl+n",
+    "command": "-extension.vim_ctrl+n",
+    "when": "editorTextFocus && vim.active && vim.use<C-n> && !inDebugRepl || vim.active && vim.use<C-n> && !inDebugRepl && vim.mode == 'CommandlineInProgress' || vim.active && vim.use<C-n> && !inDebugRepl && vim.mode == 'SearchInProgressMode'",
+  },
+  {
+    "key": "ctrl+[",
+    "command": "-extension.vim_ctrl+[",
+    "when": "editorTextFocus && vim.active && vim.use<C-[> && !inDebugRepl",
+  },
+  {
+    "key": "ctrl+6",
+    "command": "-extension.vim_ctrl+6",
+    "when": "editorTextFocus && vim.active && vim.use<C-6> && !inDebugRepl",
+  },
+  {
+    "key": "ctrl+b",
+    "command": "-extension.vim_ctrl+b",
+    "when": "editorTextFocus && vim.active && vim.use<C-b> && !inDebugRepl && vim.mode != 'Insert'",
+  },
+  {
+    "key": "ctrl+down",
+    "command": "-extension.vim_ctrl+down",
+    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode != 'Insert'",
+  },
+  {
+    "key": "ctrl+home",
+    "command": "-extension.vim_ctrl+home",
+    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode != 'Insert'",
+  },
+  {
+    "key": "ctrl+g",
+    "command": "-extension.vim_ctrl+g",
+    "when": "editorTextFocus && vim.active && vim.use<C-g> && !inDebugRepl",
+  },
+  {
+    "key": "ctrl+h",
+    "command": "-extension.vim_ctrl+h",
+    "when": "editorTextFocus && vim.active && vim.use<C-h> && !inDebugRepl",
+  },
+  {
+    "key": "ctrl+i",
+    "command": "-extension.vim_ctrl+i",
+    "when": "editorTextFocus && vim.active && vim.use<C-i> && !inDebugRepl",
+  },
+  {
+    "key": "ctrl+k",
+    "command": "-extension.vim_ctrl+k",
+    "when": "editorTextFocus && vim.active && vim.use<C-k> && !inDebugRepl",
+  },
+  {
+    "key": "ctrl+end",
+    "command": "-extension.vim_ctrl+end",
+    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode != 'Insert'",
+  },
+  {
+    "key": "ctrl+j",
+    "command": "-extension.vim_ctrl+j",
+    "when": "editorTextFocus && vim.active && vim.use<C-j> && !inDebugRepl",
+  },
+  {
+    "key": "ctrl+e",
+    "command": "-extension.vim_ctrl+e",
+    "when": "editorTextFocus && vim.active && vim.use<C-e> && !inDebugRepl",
+  },
+  {
+    "key": "ctrl+backspace",
+    "command": "-extension.vim_ctrl+backspace",
+    "when": "editorTextFocus && vim.active && vim.use<C-BS> && !inDebugRepl && vim.mode != 'Insert'",
+  },
+  {
+    "key": "ctrl+left",
+    "command": "-extension.vim_ctrl+left",
+    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode != 'Insert'",
+  },
+  {
+    "key": "ctrl+o",
+    "command": "-extension.vim_ctrl+o",
+    "when": "editorTextFocus && vim.active && vim.use<C-o> && !inDebugRepl",
+  },
+  {
+    "key": "ctrl+pageup",
+    "command": "-extension.vim_ctrl+pageup",
+    "when": "editorTextFocus && vim.active && vim.use<C-pageup> && !inDebugRepl",
+  },
+  {
+    "key": "ctrl+pagedown",
+    "command": "-extension.vim_ctrl+pagedown",
+    "when": "editorTextFocus && vim.active && vim.use<C-pagedown> && !inDebugRepl",
+  },
+  {
+    "key": "ctrl+shift+2",
+    "command": "-extension.vim_ctrl+shift+2",
+    "when": "editorTextFocus && vim.active && vim.use<C-shift+2>",
+  },
+  {
+    "key": "ctrl+d",
+    "command": "-extension.vim_ctrl+d",
+    "when": "editorTextFocus && vim.active && vim.use<C-d> && !inDebugRepl",
+  },
+  {
+    "key": "ctrl+s",
+    "command": "-extension.vim_ctrl+s",
+    "when": "editorTextFocus && vim.active && vim.use<C-s> && !inDebugRepl",
+  },
+  {
+    "key": "ctrl+t",
+    "command": "-extension.vim_ctrl+t",
+    "when": "editorTextFocus && vim.active && vim.use<C-t> && !inDebugRepl",
+  },
+  {
+    "key": "ctrl+right",
+    "command": "-extension.vim_ctrl+right",
+    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode != 'Insert'",
+  },
+  {
+    "key": "ctrl+m",
+    "command": "-extension.vim_ctrl+m",
+    "when": "editorTextFocus && vim.active && vim.use<C-m> && !inDebugRepl || vim.active && vim.use<C-m> && !inDebugRepl && vim.mode == 'CommandlineInProgress' || vim.active && vim.use<C-m> && !inDebugRepl && vim.mode == 'SearchInProgressMode'",
+  },
+  {
+    "key": "ctrl+r",
+    "command": "-extension.vim_ctrl+r",
+    "when": "editorTextFocus && vim.active && vim.use<C-r> && !inDebugRepl",
+  },
+  {
+    "key": "ctrl+u",
+    "command": "-extension.vim_ctrl+u",
+    "when": "editorTextFocus && vim.active && vim.use<C-u> && !inDebugRepl",
+  },
+  {
+    "key": "ctrl+unknown",
+    "command": "-extension.vim_ctrl+^",
+    "when": "editorTextFocus && vim.active && vim.use<C-^> && !inDebugRepl",
+  },
+  {
+    "key": "ctrl+up",
+    "command": "-extension.vim_ctrl+up",
+    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode != 'Insert'",
+  },
+  {
+    "key": "ctrl+space",
+    "command": "-extension.vim_ctrl+space",
+    "when": "editorTextFocus && vim.active && vim.use<C-space> && !inDebugRepl && vim.mode != 'Insert'",
+  },
+  {
+    "key": "ctrl+]",
+    "command": "-extension.vim_ctrl+]",
+    "when": "editorTextFocus && vim.active && vim.use<C-]> && !inDebugRepl",
+  },
+  {
+    "key": "ctrl+y",
+    "command": "-extension.vim_ctrl+y",
+    "when": "editorTextFocus && vim.active && vim.use<C-y> && !inDebugRepl",
+  },
+  {
+    "key": "ctrl+z",
+    "command": "-extension.vim_ctrl+z",
+    "when": "editorTextFocus && vim.active && vim.use<C-z> && !inDebugRepl",
+  },
+]
