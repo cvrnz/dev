@@ -1,12 +1,11 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
-# Based on the Tokyo Night preset (`starship preset tokyo-night`), reversed to run
-# dark to light, without the time or git status segments, and with square
-# half-block separators instead of rounded ones. Only boxes with content are
-# drawn, and the last one ends rounded. Needs a Nerd Font.
+# Based on the Tokyo Night preset (`starship preset tokyo-night`), without the
+# time or git status segments and without background colors. A thin orange strip
+# (the tmux active-tab orange) starts the line. Needs a Nerd Font.
 
 format = """
-[░▒▓](#212736)\
+[▎](#e5964f) \
 $directory\
 $git_branch\
 $nodejs\
@@ -19,70 +18,69 @@ $java\
 $kotlin\
 $haskell\
 $python\
-[ ](fg:prev_bg)\
 \n$character"""
 
 [directory]
-style = "bg:#212736"
-format = "[ $path ]($style)"
+style = ""
+format = "[$path ]($style)"
 truncation_length = 2
 truncation_symbol = "../"
 truncate_to_repo = false
 
 [git_branch]
+style = ""
 symbol = ""
-style = "bg:#2a3442"
-format = '[▌](fg:prev_bg bg:#2a3442)[ $symbol $branch ]($style)'
+format = '[$symbol $branch ]($style)'
 
 [nodejs]
+style = ""
 symbol = ""
-style = "bg:#344254"
-format = '[▌](fg:prev_bg bg:#344254)[ $symbol ($version) ]($style)'
+format = '[$symbol ($version) ]($style)'
 
 [bun]
+style = ""
 symbol = ""
-style = "bg:#344254"
-format = '[▌](fg:prev_bg bg:#344254)[ $symbol ($version) ]($style)'
+format = '[$symbol ($version) ]($style)'
 
 [rust]
+style = ""
 symbol = ""
-style = "bg:#344254"
-format = '[▌](fg:prev_bg bg:#344254)[ $symbol ($version) ]($style)'
+format = '[$symbol ($version) ]($style)'
 
 [golang]
+style = ""
 symbol = ""
-style = "bg:#344254"
-format = '[▌](fg:prev_bg bg:#344254)[ $symbol ($version) ]($style)'
+format = '[$symbol ($version) ]($style)'
 
 [php]
+style = ""
 symbol = ""
-style = "bg:#344254"
-format = '[▌](fg:prev_bg bg:#344254)[ $symbol ($version) ]($style)'
+format = '[$symbol ($version) ]($style)'
 
 [c]
+style = ""
 symbol = ""
-style = "bg:#344254"
-format = '[▌](fg:prev_bg bg:#344254)[ $symbol ($version) ]($style)'
+format = '[$symbol ($version) ]($style)'
 
 [java]
+style = ""
 symbol = ""
-style = "bg:#344254"
-format = '[▌](fg:prev_bg bg:#344254)[ $symbol ($version) ]($style)'
+format = '[$symbol ($version) ]($style)'
 
 [kotlin]
+style = ""
 symbol = ""
-style = "bg:#344254"
-format = '[▌](fg:prev_bg bg:#344254)[ $symbol ($version) ]($style)'
+format = '[$symbol ($version) ]($style)'
 
 [haskell]
+style = ""
 symbol = ""
-style = "bg:#344254"
-format = '[▌](fg:prev_bg bg:#344254)[ $symbol ($version) ]($style)'
+format = '[$symbol ($version) ]($style)'
 
 [python]
+style = ""
 symbol = ""
-style = "bg:#344254"
-format = '[▌](fg:prev_bg bg:#344254)[ $symbol ($version)(\(#$virtualenv\)) ]($style)'
+format = '[$symbol ($version)(\(#$virtualenv\)) ]($style)'
 
 
 [character]
