@@ -50,5 +50,4 @@ unset _nvim_bin
 if ! command -v starship >/dev/null 2>&1 && [ -x "$LOCALAPPDATA/Programs/starship/starship.exe" ]; then
   export PATH="$(cygpath -u "$LOCALAPPDATA")/Programs/starship:$PATH"
 fi
-export STARSHIP_CONFIG="$(cygpath -w "$HOME/local/projects/dev/configs/starship.toml")"
 command -v starship >/dev/null 2>&1 && eval "$(starship init bash)"
