@@ -17,6 +17,12 @@ CLAUDE_SKILLS_DEST=${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills
 STARSHIP_DEST=${STARSHIP_CONFIG:-$HOME/.config/starship.toml}
 NVIM_DEST=${XDG_CONFIG_HOME:-$HOME/.config}/nvim
 GHOSTTY_DEST=${XDG_CONFIG_HOME:-$HOME/.config}/ghostty/config
+ZSHRC_DEST=${ZDOTDIR:-$HOME}/.zshrc
+if [[ $OSTYPE == darwin* ]]; then
+  VSCODE_DIR="$HOME/Library/Application Support/Code/User"
+else
+  VSCODE_DIR=${XDG_CONFIG_HOME:-$HOME/.config}/Code/User
+fi
 # tmux reads ~/.tmux.conf first, so keep using it if it's already there
 if [[ -e $HOME/.tmux.conf ]]; then
   TMUX_DEST=$HOME/.tmux.conf
@@ -72,6 +78,9 @@ build_items() {
     "Configs|tmux config|$COMMON_DIR/tmux.conf|$TMUX_DEST"
     "Configs|Neovim config|$COMMON_DIR/nvim|$NVIM_DEST"
     "Configs|Ghostty config|$CONFIGS_DIR/ghostty.conf|$GHOSTTY_DEST"
+    "Configs|zshrc|$CONFIGS_DIR/zshrc.sh|$ZSHRC_DEST"
+    "Configs|VS Code settings|$CONFIGS_DIR/vscode-settings.jsonc|$VSCODE_DIR/settings.json"
+    "Configs|VS Code keybindings|$CONFIGS_DIR/vscode-keybindings.jsonc|$VSCODE_DIR/keybindings.json"
   )
 }
 
@@ -174,15 +183,14 @@ select_items() {
     ITEM_LABELS[i]=$label
     ITEM_SRCS[i]=$src
     ITEM_DESTS[i]=$dest
+    # Nothing starts selected, every item has to be picked by hand
+    SELECTED[i]=0
     if is_up_to_date "$src" "$dest"; then
       ITEM_STATES[i]=current
-      SELECTED[i]=0
     elif [[ -e $dest || -L $dest ]]; then
       ITEM_STATES[i]=differs
-      SELECTED[i]=1
     else
       ITEM_STATES[i]=new
-      SELECTED[i]=1
     fi
   done
 
@@ -217,6 +225,7 @@ select_items() {
 
   # Replace the menu with a summary of what will be copied
   printf '\e[%dA\e[J' "$MENU_LINES"
+  [[ ${SELECTED[(I)1]} -gt 0 ]] || { printf '\e[?25h'; return }
   printf '  %sCopying:%s\n' "$C_BOLD" "$C_RESET"
   for i in {1..$n}; do
     [[ ${SELECTED[i]} -eq 1 ]] && printf '    %s◉%s %s %s→ %s%s\n' "$C_GREEN" "$C_RESET" "${ITEM_LABELS[i]}" "$C_DIM" "${ITEM_DESTS[i]}" "$C_RESET"

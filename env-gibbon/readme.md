@@ -36,7 +36,7 @@ skills/      Claude Code skills
 | [`zshrc.sh`](configs/zshrc.sh) | macOS `~/.zshrc`: env vars, PATH, fnm and the prompt |
 
 ### Copy configs
-Interactive menu that copies the skills and the Neovim, starship, tmux and Ghostty configs onto the system (macOS and Linux, needs zsh). Anything already at a destination is moved to `~/.dev-backups/<timestamp>/` first, never deleted.
+Interactive menu that copies the skills and configs onto the system (macOS and Linux, needs zsh). Nothing is selected at the start, so only what you pick gets copied. Anything already at a destination is moved to `~/.dev-backups/<timestamp>/` first, never deleted.
 ```sh
 zsh env-gibbon/scripts/copy-configs.zsh
 ```
@@ -48,8 +48,11 @@ zsh env-gibbon/scripts/copy-configs.zsh
 | Starship theme | `common/starship.toml` | `~/.config/starship.toml` |
 | tmux config | `common/tmux.conf` | `~/.tmux.conf` if it exists, else `~/.config/tmux/tmux.conf` |
 | Ghostty config | `env-gibbon/configs/ghostty.conf` | `~/.config/ghostty/config` |
+| zshrc | `env-gibbon/configs/zshrc.sh` | `~/.zshrc` |
+| VS Code settings | `env-gibbon/configs/vscode-settings.jsonc` | `settings.json` in `~/Library/Application Support/Code/User` (macOS) or `~/.config/Code/User` (Linux) |
+| VS Code keybindings | `env-gibbon/configs/vscode-keybindings.jsonc` | `keybindings.json` in the same folder |
 
-The other configs (VS Code, Karabiner, Keychron, Vimium, zsh) are set up by hand in their apps.
+The other configs (Karabiner, Keychron, Vimium) are set up by hand in their apps.
 
 ### Container
 An Ubuntu container with zsh, for running `dev-setup.sh`. The scripts work from any folder.
