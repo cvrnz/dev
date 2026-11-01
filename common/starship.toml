@@ -1,0 +1,94 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# Based on the Tokyo Night preset (`starship preset tokyo-night`), reversed to run
+# dark to light, without the time or git status segments, and with square
+# half-block separators instead of rounded ones. Only boxes with content are
+# drawn, and the last one ends rounded. Needs a Nerd Font.
+
+format = """
+[░▒▓](#212736)\
+$directory\
+$git_branch\
+$nodejs\
+$bun\
+$rust\
+$golang\
+$php\
+$c\
+$java\
+$kotlin\
+$haskell\
+$python\
+[ ](fg:prev_bg)\
+\n$character"""
+
+[directory]
+style = "bg:#212736"
+format = "[ $path ]($style)"
+truncation_length = 2
+truncation_symbol = "../"
+truncate_to_repo = false
+
+[git_branch]
+symbol = ""
+style = "bg:#2a3442"
+format = '[▌](fg:prev_bg bg:#2a3442)[ $symbol $branch ]($style)'
+
+[nodejs]
+symbol = ""
+style = "bg:#344254"
+format = '[▌](fg:prev_bg bg:#344254)[ $symbol ($version) ]($style)'
+
+[bun]
+symbol = ""
+style = "bg:#344254"
+format = '[▌](fg:prev_bg bg:#344254)[ $symbol ($version) ]($style)'
+
+[rust]
+symbol = ""
+style = "bg:#344254"
+format = '[▌](fg:prev_bg bg:#344254)[ $symbol ($version) ]($style)'
+
+[golang]
+symbol = ""
+style = "bg:#344254"
+format = '[▌](fg:prev_bg bg:#344254)[ $symbol ($version) ]($style)'
+
+[php]
+symbol = ""
+style = "bg:#344254"
+format = '[▌](fg:prev_bg bg:#344254)[ $symbol ($version) ]($style)'
+
+[c]
+symbol = ""
+style = "bg:#344254"
+format = '[▌](fg:prev_bg bg:#344254)[ $symbol ($version) ]($style)'
+
+[java]
+symbol = ""
+style = "bg:#344254"
+format = '[▌](fg:prev_bg bg:#344254)[ $symbol ($version) ]($style)'
+
+[kotlin]
+symbol = ""
+style = "bg:#344254"
+format = '[▌](fg:prev_bg bg:#344254)[ $symbol ($version) ]($style)'
+
+[haskell]
+symbol = ""
+style = "bg:#344254"
+format = '[▌](fg:prev_bg bg:#344254)[ $symbol ($version) ]($style)'
+
+[python]
+symbol = ""
+style = "bg:#344254"
+format = '[▌](fg:prev_bg bg:#344254)[ $symbol ($version)(\(#$virtualenv\)) ]($style)'
+
+
+[character]
+success_symbol = '[>](bold #344254)'
+error_symbol = '[>](bold #344254)'
+vimcmd_symbol = '[<](bold #9ece6a)'
+vimcmd_replace_one_symbol = '[<](bold #bb9af7)'
+vimcmd_replace_symbol = '[<](bold #bb9af7)'
+vimcmd_visual_symbol = '[<](bold #e0af68)'

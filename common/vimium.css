@@ -1,0 +1,15 @@
+.vimiumHUD {
+    visibility: hidden;
+}
+
+/* linkhint boxes */
+div > .vimiumHintMarker {
+    background: black !important;
+    border-color: black;
+}
+
+/* linkhint text */
+div > .vimiumHintMarker span {
+    color: whitesmoke;
+    font-family: 'Google Sans';
+}

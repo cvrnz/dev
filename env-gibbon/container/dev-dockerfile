@@ -1,0 +1,18 @@
+FROM ubuntu:noble
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update -y && \
+    apt-get install -y curl unzip tar zsh && \
+    rm -rf /var/lib/apt/lists/* && \
+    chsh -s $(which zsh) root
+
+# The build context is the repo root (see scripts/create-image.sh)
+COPY env-gibbon/scripts/dev-setup.sh /root/dev-setup.sh
+COPY common /root/common
+
+EXPOSE 1776-1800
+
+WORKDIR /root
+
+CMD ["zsh"]

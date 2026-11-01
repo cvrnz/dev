@@ -1,0 +1,209 @@
+[
+  /*----- editor -----*/
+
+  {
+    // focus editor
+    "key": "cmd+d",
+    "command": "runCommands",
+    "args": {
+      "commands": ["workbench.action.closePanel", "workbench.action.focusActiveEditorGroup"],
+    },
+    "when": "!panelVisible",
+  },
+  {
+    // previous tab
+    "key": "cmd+h",
+    "command": "workbench.action.previousEditor",
+    "when": "editorFocus || terminalFocus",
+  },
+  {
+    // next tab
+    "key": "cmd+l",
+    "command": "workbench.action.nextEditor",
+    "when": "editorFocus || terminalFocus",
+  },
+  {
+    // create new file
+    "key": "cmd+n",
+    "command": "runCommands",
+    "args": {
+      "commands": ["workbench.action.closePanel", "workbench.action.files.newUntitledFile"],
+    },
+  },
+  {
+    // create new terminal in editor
+    "key": "cmd+t",
+    "command": "runCommands",
+    "args": {
+      "commands": ["workbench.action.closePanel", "workbench.action.createTerminalEditor"],
+    },
+  },
+  {
+    // clear terminal
+    "key": "cmd+k cmd+k",
+    "command": "workbench.action.terminal.clear",
+    "when": "terminalFocus && terminalHasBeenCreated && !accessibilityModeEnabled || terminalFocus && terminalProcessSupported && !accessibilityModeEnabled || accessibilityModeEnabled && accessibleViewIsShown && terminalHasBeenCreated && accessibleViewCurrentProviderId == 'terminal' || accessibilityModeEnabled && accessibleViewIsShown && terminalProcessSupported && accessibleViewCurrentProviderId == 'terminal'"
+  },
+
+  /*----- panel-----*/
+
+  {
+    // focus panel
+    "key": "shift+cmd+g",
+    "command": "workbench.action.togglePanel",
+    "when": "!panelVisible || (panelVisible && panelMaximized)",
+  },
+  {
+    // ensure panel is maximized
+    "key": "shift+cmd+g",
+    "command": "workbench.action.toggleMaximizedPanel",
+    "when": "panelVisible && !panelMaximized",
+  },
+  {
+    // open claude code when panel is open
+    "key": "cmd+d",
+    "command": "claudeVSCodeSidebarSecondary.focus",
+    "when": "panelVisible",
+  },
+  {
+    // next panel view
+    "key": "cmd+l",
+    "command": "workbench.action.nextPanelView",
+    "when": "panelVisible",
+  },
+  {
+    // previous panel view
+    "key": "cmd+h",
+    "command": "workbench.action.previousPanelView",
+    "when": "panelVisible",
+  },
+
+  /*----- sidebar -----*/
+
+  {
+    // focus source control
+    "key": "cmd+r",
+    "command": "workbench.scm.focus",
+  },
+  {
+    // open explorer when sidebar is open
+    "key": "cmd+e",
+    "command": "workbench.view.explorer",
+  },
+  {
+    // open empty sidebar view (local.vscode-empty extension)
+    "key": "cmd+g",
+    "command": "runCommands",
+    "args": {
+      "commands": ["workbench.view.extension.empty", "workbench.action.focusActiveEditorGroup"],
+    },
+  },
+  {
+    // previous side bar view
+    "key": "cmd+h",
+    "command": "workbench.action.previousSideBarView",
+    "when": "sideBarFocus",
+  },
+  {
+    // next side bar view
+    "key": "cmd+l",
+    "command": "workbench.action.nextSideBarView",
+    "when": "sideBarFocus",
+  },
+
+  /*----- explorer -----*/
+
+  {
+    // open file
+    "key": "enter",
+    "command": "list.select",
+    "when": "explorerViewletFocus && !inputFocus",
+  },
+  {
+    // new file
+    "key": "a",
+    "command": "explorer.newFile",
+    "when": "explorerViewletFocus && !inputFocus",
+  },
+  {
+    // new folder
+    "key": "shift+a",
+    "command": "explorer.newFolder",
+    "when": "explorerViewletFocus && !inputFocus",
+  },
+  {
+    // rename
+    "key": "r",
+    "command": "renameFile",
+    "when": "explorerViewletFocus && !inputFocus",
+  },
+  {
+    // down
+    "key": "j",
+    "command": "list.focusDown",
+    "when": "explorerViewletFocus && !inputFocus",
+  },
+  {
+    // up
+    "key": "k",
+    "command": "list.focusUp",
+    "when": "explorerViewletFocus && !inputFocus",
+  },
+
+  /*----- other -----*/
+
+  {
+    // signal interrupt
+    "key": "shift+cmd+c",
+    "command": "workbench.action.terminal.sendSequence",
+    "args": { "text": "\u0003" },
+    "when": "terminalFocus",
+  },
+
+  /*----- clear -----*/
+
+  {
+    "key": "ctrl+`",
+    "command": "-workbench.action.terminal.toggleTerminal",
+    "when": "terminal.active",
+  },
+  {
+    "key": "cmd+t",
+    "command": "-workbench.action.showAllSymbols",
+  },
+  {
+    "key": "cmd+n",
+    "command": "-workbench.action.files.newUntitledFile",
+  },
+  {
+    "key": "cmd+e",
+    "command": "-actions.findWithSelection",
+  },
+  {
+    "key": "cmd+j",
+    "command": "-workbench.action.togglePanel",
+  },
+  {
+    "key": "cmd+k",
+    "command": "-workbench.debug.panel.action.clearReplAction",
+    "when": "focusedView == 'workbench.panel.repl.view'"
+  },
+  {
+    "key": "shift+cmd+[",
+    "command": "-workbench.action.previousEditor",
+  },
+  {
+    "key": "shift+cmd+]",
+    "command": "-workbench.action.nextEditor",
+  },
+  {
+    "key": "shift+cmd+[",
+    "command": "-workbench.action.terminal.focusPrevious",
+    "when": "terminalFocus && terminalHasBeenCreated && !terminalEditorFocus || terminalFocus && terminalProcessSupported && !terminalEditorFocus",
+  },
+  {
+    "key": "shift+cmd+]",
+    "command": "-workbench.action.terminal.focusNext",
+    "when": "terminalFocus && terminalHasBeenCreated && !terminalEditorFocus || terminalFocus && terminalProcessSupported && !terminalEditorFocus",
+  },
+]
