@@ -20,12 +20,13 @@ $haskell\
 $python\
 \n$character"""
 
+# Full working directory, with $HOME shown as ~.
 [directory]
 style = ""
 format = "[$path ]($style)"
-truncation_length = 2
-truncation_symbol = "../"
+truncation_length = 0
 truncate_to_repo = false
+home_symbol = "~"
 
 [git_branch]
 style = ""
